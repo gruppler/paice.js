@@ -99,6 +99,7 @@
 				["er",		"", 	CONTINUE],
 				["ear",		"", 	PROTECT],
 				["ar",		"", 	STOP],
+				["ior",		"", 	CONTINUE],
 				["or",		"", 	CONTINUE],
 				["ur",		"", 	CONTINUE],
 				["rr",		"r", 	STOP],
