@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html>
+<head><title>JavaScript Lancaster Stemmer</title></head>
+<body>
+	<script src="paice.min.js"></script>
+	<script type="text/javascript">
+		function getStems(){
+			var words = document.getElementById('words').value.split(/\s+/),
+				output = document.getElementById('stems');
+			output.value = '';
+			words.map(function(word){
+				output.value += word.getStem() + '\n';
+			});
+			return false;
+		}
+	</script>
+
+	<form id="stemmer" onsubmit="return getStems();">
+		<textarea id="words" rows=5 cols=30></textarea><br/>
+		<input type="submit" value="Stem"/><br/>
+		<output id="stems" style="white-space: pre;"/>
+	</form>
+</body>
+</html>
