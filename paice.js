@@ -210,7 +210,7 @@
 				return NOTAPPLY;
 			};
 
-		this.stem = this.replace(/^[^A-Za-z]+|[^A-Za-z]+$/g, '');
+		this.stem = this.replace(/^[^A-Za-z]+|[^A-Za-z]+$/g, '').replace(/(n't|'s|'m|'re|'ve|'d|'ll)$/i, '');
 		if(/[A-Za-z]/.test(this.stem[0]) && acceptable(this.stem)){
 			var isIntact = true;
 			while(ruleWalk(isIntact) != STOP){
