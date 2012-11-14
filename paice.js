@@ -179,7 +179,7 @@
 				);
 			},
 			ruleWalk = function(isIntact){
-				var lastLetter = self.stem.substr(-1, 1);
+				var lastLetter = self.stem.substr(-1, 1).toLowerCase();
 				if(lastLetter in rules){
 					for(var i = 0; i < rules[lastLetter].length; i++){
 						var result = applyRule(rules[lastLetter][i], isIntact);
@@ -193,7 +193,7 @@
 			applyRule = function(rule, isIntact){
 				if(
 					(isIntact || !(rule[2] & INTACT))
-					&& self.stem.substr(-rule[0].length, rule[0].length) == rule[0]
+					&& self.stem.substr(-rule[0].length, rule[0].length).toLowerCase() == rule[0]
 				){
 					if(rule[2] & PROTECT){
 						return STOP;
