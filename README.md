@@ -1,9 +1,9 @@
 paice.js
-========
-A JavaScript implementation of the Lancaster Stemmer
-(c)2012 Craig Laparo (http://github.com/gruppler)
+--------
+A JavaScript implementation of the Lancaster Stemmer<br/>
+&copy; 2012 Craig Laparo (http://github.com/gruppler)
 
-Loosely translated from Perl code found at:
+Loosely translated from Perl code found at:<br/>
 http://www.comp.lancs.ac.uk/computing/research/stemming/Links/implementations.htm
 
 Usage:
