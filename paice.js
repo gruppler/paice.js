@@ -174,7 +174,7 @@
 			},
 			acceptable = function(word){
 				return (word.length > 3 ||
-					isVowel(word[0]) && !isVowel(word[1]) ||
+					word.length >= 2 && isVowel(word[0]) && !isVowel(word[1]) ||
 					word.length >= 3 && !isVowel(word[0]) && (isVowel(word[1]) || isVowel(word[2]))
 				);
 			},
