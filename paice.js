@@ -165,57 +165,55 @@
 				["iz",		"", 	CONTINUE],
 				["yz",		"ys", 	STOP]
 			]
+		},
+
+		vowel = /^[aeiouy]$/i,
+		isVowel = function(letter){
+			return vowel.test(letter);
+		},
+		acceptable = function(word){
+			return (word.length > 3 ||
+				word.length >= 2 && isVowel(word[0]) && !isVowel(word[1]) ||
+				word.length >= 3 && !isVowel(word[0]) && (isVowel(word[1]) || isVowel(word[2]))
+			);
+		},
+		ruleWalk = function(word, isIntact){
+			var lastLetter = word.stem.substr(-1, 1).toLowerCase();
+			if(lastLetter in rules){
+				for(var i = 0; i < rules[lastLetter].length; i++){
+					var result = applyRule(word, rules[lastLetter][i], isIntact);
+					if(result != NOTAPPLY){
+						return result;
+					}
+				}
+			}
+			return STOP;
+		},
+		applyRule = function(word, rule, isIntact){
+			if(
+				(isIntact || !(rule[2] & INTACT))
+				&& word.stem.substr(-rule[0].length, rule[0].length).toLowerCase() == rule[0]
+			){
+				if(rule[2] & PROTECT){
+					return STOP;
+				}else{
+					var testWord = word.stem.substr(0, word.stem.length - rule[0].length) + rule[1];
+					if(!acceptable(testWord)){
+						return STOP;
+					}else{
+						word.stem = testWord;
+						return (rule[2] & CONTINUE) ? CONTINUE : STOP;
+					}
+				}
+			}
+			return NOTAPPLY;
 		};
 
 	String.prototype.getStem = function(){
-		var self = this,
-			vowel = /^[aeiouy]$/i,
-			isVowel = function(letter){
-				return vowel.test(letter);
-			},
-			acceptable = function(word){
-				return (word.length > 3 ||
-					word.length >= 2 && isVowel(word[0]) && !isVowel(word[1]) ||
-					word.length >= 3 && !isVowel(word[0]) && (isVowel(word[1]) || isVowel(word[2]))
-				);
-			},
-			ruleWalk = function(isIntact){
-				var lastLetter = self.stem.substr(-1, 1).toLowerCase();
-				if(lastLetter in rules){
-					for(var i = 0; i < rules[lastLetter].length; i++){
-						var result = applyRule(rules[lastLetter][i], isIntact);
-						if(result != NOTAPPLY){
-							return result;
-						}
-					}
-				}
-				return STOP;
-			},
-			applyRule = function(rule, isIntact){
-				if(
-					(isIntact || !(rule[2] & INTACT))
-					&& self.stem.substr(-rule[0].length, rule[0].length).toLowerCase() == rule[0]
-				){
-					if(rule[2] & PROTECT){
-						return STOP;
-					}else{
-						var testWord = self.stem.substr(0, self.stem.length - rule[0].length) + rule[1];
-						if(!acceptable(testWord)){
-							return STOP;
-						}else{
-							self.stem = testWord;
-							return (rule[2] & CONTINUE) ? CONTINUE : STOP;
-						}
-					}
-				}
-				return NOTAPPLY;
-			};
-
 		this.stem = this.replace(/^[^A-Za-z]+|[^A-Za-z]+$/g, '').replace(/(n't|'s|'m|'re|'ve|'d|'ll)$/i, '');
 		if(/[A-Za-z]/.test(this.stem[0]) && acceptable(this.stem)){
-			var isIntact = true;
-			while(ruleWalk(isIntact) != STOP){
-				isIntact = false;
+			if(ruleWalk(this, true) != STOP){
+				while(ruleWalk(this, false) != STOP){}
 			}
 		}
 		return this.stem;
